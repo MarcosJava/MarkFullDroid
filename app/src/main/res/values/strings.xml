@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MarkFullDroid</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Recarregar JSON</string>
+    <string name="sair">Sair</string>
+    <string name="salvar">Salvar</string>
+    <string name="title_activity_salvar">SalvarActivity</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="nome">Nome :</string>
+    <string name="dt_nascimento">Data Nascimento :</string>
+</resources>
