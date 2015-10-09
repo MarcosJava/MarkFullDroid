@@ -1,34 +1,22 @@
 package br.com.mrcsfelipe.markfulldroid.activitys;
 
-import android.app.Activity;
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +30,9 @@ public class MainActivity extends ListActivity {
     private List<Map<String, Object>> personsMAP = new ArrayList<>();
     private Persons persons;
     private SimpleAdapter adapter;
+
+
+
 
 
     @Override
@@ -114,16 +105,21 @@ public class MainActivity extends ListActivity {
             return true;
         } else if (id == R.id.salvar){
             salvar();
+        } else if (id == R.id.notificacao){
+            notificacao();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void notificacao() {
+
+    }
     private class HttpRequestTask extends AsyncTask<Void, Void, Persons> {
         @Override
         protected Persons doInBackground(Void... params) {
             try {
-                final String url = "http://192.168.1.101:8080/MarkFullOne/rest/persons";
+                final String url = "http://10.0.2.2:8080/MarkFullOne/rest/persons";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Persons person = restTemplate.getForObject(url, Persons.class);

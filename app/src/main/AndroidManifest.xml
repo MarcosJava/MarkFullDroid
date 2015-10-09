@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -35,6 +36,13 @@
         <activity
             android:name=".activitys.SalvarActivity"
             android:label="@string/title_activity_salvar" >
+        </activity>
+        <activity android:name=".activitys.CriarNotificacao"
+            android:label="Details of notification"
+            android:parentActivityName=".activitys.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activitys.MainActivity"/>
         </activity>
     </application>
 

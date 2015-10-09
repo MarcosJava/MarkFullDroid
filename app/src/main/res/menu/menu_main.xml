@@ -13,6 +13,11 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
 
+    <item android:id="@+id/notificacao"
+        android:title="@string/notificacao"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
     <item android:id="@+id/sair"
         android:title="@string/sair"
         android:orderInCategory="100"

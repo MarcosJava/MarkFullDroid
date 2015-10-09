@@ -7,6 +7,7 @@
     <string name="salvar">Salvar</string>
     <string name="title_activity_salvar">SalvarActivity</string>
     <string name="cadastrar">Cadastrar</string>
+    <string name="notificacao">Notificacao</string>
     <string name="nome">Nome :</string>
     <string name="dt_nascimento">Data Nascimento :</string>
 </resources>

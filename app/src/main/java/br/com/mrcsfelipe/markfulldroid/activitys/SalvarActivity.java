@@ -27,7 +27,7 @@ public class SalvarActivity extends AppCompatActivity {
     private EditText etNome;
     private EditText etDtNascimento;
     private Person person;
-    private static final String url = "http://192.168.1.101:8080/MarkFullOne/rest/persons";
+    private static final String url = "http://10.0.2.2:8080/MarkFullOne/rest/persons";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
