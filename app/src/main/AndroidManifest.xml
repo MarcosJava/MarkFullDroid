@@ -37,13 +37,6 @@
             android:name=".activitys.SalvarActivity"
             android:label="@string/title_activity_salvar" >
         </activity>
-        <activity android:name=".activitys.CriarNotificacao"
-            android:label="Details of notification"
-            android:parentActivityName=".activitys.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activitys.MainActivity"/>
-        </activity>
     </application>
 
 </manifest>

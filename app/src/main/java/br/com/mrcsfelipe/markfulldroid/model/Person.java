@@ -1,5 +1,7 @@
 package br.com.mrcsfelipe.markfulldroid.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.orm.SugarRecord;
 
 import java.util.Date;
@@ -7,7 +9,11 @@ import java.util.Date;
 /**
  * Created by markFelipe on 06/10/15.
  */
-public class Person extends SugarRecord<Person>{
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Person{
+
+
 
     private Integer identify;
 

@@ -3,6 +3,7 @@ package br.com.mrcsfelipe.markfulldroid.activitys;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,12 +14,22 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 
 import br.com.mrcsfelipe.markfulldroid.R;
@@ -44,13 +55,14 @@ public class SalvarActivity extends AppCompatActivity {
 
     public void cadastrar(View view){
         try {
-            //DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String data = etDtNascimento.getText().toString();
-            person.setIdentify(0);
+            person.setIdentify(9999);
             person.setNome(etNome.getText().toString());
-            person.setDataNascimento(new Date().toString());
+            person.setDataNascimento(df.format(new Date()));
+            Log.i("Post", "enviando para o servidor");
+            new HttpRequestTask().execute(MediaType.APPLICATION_JSON);
 
-            new HttpRequestTask().execute();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -63,8 +75,8 @@ public class SalvarActivity extends AppCompatActivity {
      * POST -- Conectando com o Servidor
      *
      * */
-
-    private class HttpRequestTask extends AsyncTask<Void, Void, Person> {
+    // doInBackground , onPreExecute, onPostExecute
+    private class HttpRequestTask extends AsyncTask<MediaType, Void, String> {
         ProgressDialog dialog;
 
         @Override
@@ -83,31 +95,48 @@ public class SalvarActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Person doInBackground(Void... params) {
+        protected String doInBackground(MediaType... params) {
             try {
 
+                MediaType mediaType = params[0];
+
+                HttpHeaders requestHeaders = new HttpHeaders();
+
+                // Sending a JSON or XML object i.e. "application/json" or "application/xml"
+                requestHeaders.setContentType(mediaType);
+
+                // Populate the Message object to serialize and headers in an
+                // HttpEntity object to use for the request
+                HttpEntity<Person> requestEntity = new HttpEntity<Person>(person, requestHeaders);
 
                 RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                // Person greeting = restTemplate.postForObject(url,person ,Person.class);
 
-                Log.i("POSTpreparo", person.toString());
-
-                ResponseEntity<Person> response = restTemplate.postForEntity(url, person, Person.class);
-                Log.d("BODY", response.getBody().toString());
-                int codigoResult = response.getStatusCode().value();
-
-                if (codigoResult == 500) {
-                    return null;
-                } else if (codigoResult == 400) {
-                    Context context = getApplicationContext();
-                    Toast toast = Toast.makeText(context, "Deu erro no envio", Toast.LENGTH_LONG);
-                    toast.show();
-                    return null;
-                } else {
-                    Log.d("BODY", response.getBody().toString());
-                    return response.getBody();
+                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+                if (mediaType == MediaType.APPLICATION_JSON) {
+                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                } else if (mediaType == MediaType.APPLICATION_XML) {
+                    restTemplate.getMessageConverters().add(new SimpleXmlHttpMessageConverter());
                 }
+
+
+                ResponseEntity<String> response =
+                        restTemplate.postForEntity(url, requestEntity, String.class);
+
+                Log.i("POST", response.getBody().toString());
+
+                if(response.getStatusCode().value() == 400){
+                    return "";
+                } else if (response.getStatusCode().value() == 500){
+                    return "erroServer";
+                } else if (response.getStatusCode().value() == 404){
+                    return "serverOff";
+                }
+
+
+                // Return the response body to display to the user
+                return response.getBody();
+
+
 
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
@@ -117,14 +146,23 @@ public class SalvarActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Person person) {
+        protected void onPostExecute(String person) {
 
-            if(person == null){
+            if(person == ""){
                 dialog.dismiss();
+                Toast.makeText(SalvarActivity.this, "Dados invalidos", Toast.LENGTH_LONG).show();
+            }else if(person == "erroServer"){
+                dialog.dismiss();
+                Toast.makeText(SalvarActivity.this, "Servidor dando erro", Toast.LENGTH_LONG).show();
+            }else if(person == "serverOff"){
+                dialog.dismiss();
+                Toast.makeText(SalvarActivity.this, "Servidor Off", Toast.LENGTH_LONG).show();
             }else {
                 Log.d("POST", person.toString());
                 dialog.dismiss();
+                Toast.makeText(SalvarActivity.this, "Dados enviado com Sucesso", Toast.LENGTH_LONG).show();
             }
+
 
 
         }
