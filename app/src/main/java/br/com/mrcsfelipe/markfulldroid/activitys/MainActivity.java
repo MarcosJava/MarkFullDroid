@@ -30,6 +30,7 @@ public class MainActivity extends ListActivity {
     private List<Map<String, Object>> personsMAP = new ArrayList<>();
     private Persons persons;
     private SimpleAdapter adapter;
+    static final String url = "http://10.0.2.2:8080/MarkFullOne/rest/persons";
 
 
 
@@ -39,6 +40,7 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
+        new HttpRequestTask().execute();
         popularAdpter();
         adapter.areAllItemsEnabled();
 
@@ -119,7 +121,7 @@ public class MainActivity extends ListActivity {
         @Override
         protected Persons doInBackground(Void... params) {
             try {
-                final String url = "http://10.0.2.2:8080/MarkFullOne/rest/persons";
+
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Persons person = restTemplate.getForObject(url, Persons.class);

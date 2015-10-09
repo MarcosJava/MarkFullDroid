@@ -1,6 +1,7 @@
 package br.com.mrcsfelipe.markfulldroid.activitys;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -46,7 +48,8 @@ public class SalvarActivity extends AppCompatActivity {
             String data = etDtNascimento.getText().toString();
             person.setIdentify(0);
             person.setNome(etNome.getText().toString());
-            person.setDataNascimento(data);
+            person.setDataNascimento(new Date().toString());
+
             new HttpRequestTask().execute();
         }catch (Exception e){
             e.printStackTrace();
@@ -70,7 +73,7 @@ public class SalvarActivity extends AppCompatActivity {
             super.onPreExecute();
             if (android.os.Build.VERSION.SDK_INT >= 11) {
                 dialog = new ProgressDialog(SalvarActivity.this, ProgressDialog.THEME_HOLO_LIGHT);
-            }else{
+            } else {
                 dialog = new ProgressDialog(SalvarActivity.this);
             }
             dialog.setMessage(Html.fromHtml("<b>" + "Conectando com Servidor" + "</b>"));
@@ -86,21 +89,25 @@ public class SalvarActivity extends AppCompatActivity {
 
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Person greeting = restTemplate.postForObject(url,person ,Person.class);
+                // Person greeting = restTemplate.postForObject(url,person ,Person.class);
 
                 Log.i("POSTpreparo", person.toString());
 
-                //ResponseEntity<Person> response = restTemplate.postForEntity(url, person, Person.class);
-                /*
+                ResponseEntity<Person> response = restTemplate.postForEntity(url, person, Person.class);
+                Log.d("BODY", response.getBody().toString());
                 int codigoResult = response.getStatusCode().value();
 
-                if(codigoResult == 500){
+                if (codigoResult == 500) {
+                    return null;
+                } else if (codigoResult == 400) {
+                    Context context = getApplicationContext();
+                    Toast toast = Toast.makeText(context, "Deu erro no envio", Toast.LENGTH_LONG);
+                    toast.show();
                     return null;
                 } else {
                     Log.d("BODY", response.getBody().toString());
                     return response.getBody();
-                }*/
-                return greeting;
+                }
 
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
