@@ -1,6 +1,8 @@
 package br.com.mrcsfelipe.markfulldroid.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.orm.SugarRecord;
 
@@ -11,17 +13,37 @@ import java.util.Date;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Person{
+public class Person extends SugarRecord<Person>{
 
-
-
+    @JsonProperty
     private Integer identify;
 
+    @JsonProperty
     private String nome;
 
-    private String dataNascimento;
+    @JsonProperty
+    private Date dataNascimento;
+
+    @JsonIgnore
+    private String foiEnviado;
+
+    public Person(Integer identify, String nome, Date dataNascimento, String foiEnviado) {
+        this.identify = identify;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.foiEnviado = foiEnviado;
+    }
 
     public Person() {
+    }
+
+
+    public String getFoiEnviado() {
+        return foiEnviado;
+    }
+
+    public void setFoiEnviado(String foiEnviado) {
+        this.foiEnviado = foiEnviado;
     }
 
     public Integer getIdentify() {
@@ -40,11 +62,11 @@ public class Person{
         this.nome = nome;
     }
 
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

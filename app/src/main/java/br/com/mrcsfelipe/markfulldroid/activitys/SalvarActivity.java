@@ -40,7 +40,7 @@ public class SalvarActivity extends AppCompatActivity {
     private EditText etNome;
     private EditText etDtNascimento;
     private Person person;
-    private static final String url = "http://10.0.2.2:8080/MarkFullOne/rest/persons";
+    public static final String url = "http://10.0.2.2:8080/MarkFullOne/rest/persons";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +57,9 @@ public class SalvarActivity extends AppCompatActivity {
         try {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String data = etDtNascimento.getText().toString();
-            person.setIdentify(9999);
+            person.setIdentify(0);
             person.setNome(etNome.getText().toString());
-            person.setDataNascimento(df.format(new Date()));
+            person.setDataNascimento(new Date());
             Log.i("Post", "enviando para o servidor");
             new HttpRequestTask().execute(MediaType.APPLICATION_JSON);
 
@@ -120,7 +120,7 @@ public class SalvarActivity extends AppCompatActivity {
 
 
                 ResponseEntity<String> response =
-                        restTemplate.postForEntity(url, requestEntity, String.class);
+                        restTemplate.postForEntity(SalvarActivity.url, requestEntity, String.class);
 
                 Log.i("POST", response.getBody().toString());
 
@@ -128,10 +128,9 @@ public class SalvarActivity extends AppCompatActivity {
                     return "";
                 } else if (response.getStatusCode().value() == 500){
                     return "erroServer";
-                } else if (response.getStatusCode().value() == 404){
+                } else if (response.getStatusCode().value() == 404) {
                     return "serverOff";
                 }
-
 
                 // Return the response body to display to the user
                 return response.getBody();
@@ -139,9 +138,9 @@ public class SalvarActivity extends AppCompatActivity {
 
 
             } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
+
                 dialog.dismiss();
-                return null;
+                return "erroServer";
             }
         }
 
@@ -153,18 +152,27 @@ public class SalvarActivity extends AppCompatActivity {
                 Toast.makeText(SalvarActivity.this, "Dados invalidos", Toast.LENGTH_LONG).show();
             }else if(person == "erroServer"){
                 dialog.dismiss();
+                naoEnviadoSalvaSQL();
                 Toast.makeText(SalvarActivity.this, "Servidor dando erro", Toast.LENGTH_LONG).show();
             }else if(person == "serverOff"){
                 dialog.dismiss();
+                naoEnviadoSalvaSQL();
                 Toast.makeText(SalvarActivity.this, "Servidor Off", Toast.LENGTH_LONG).show();
             }else {
                 Log.d("POST", person.toString());
                 dialog.dismiss();
                 Toast.makeText(SalvarActivity.this, "Dados enviado com Sucesso", Toast.LENGTH_LONG).show();
             }
+        }
 
+        public void naoEnviadoSalvaSQL(){
+            person.setIdentify(null);
+            person.setFoiEnviado("false");
+            Log.i("NAO SALVO", person.toString());
+           // person.save();
 
-
+            Person p = new Person(null,person.getNome(), person.getDataNascimento(), person.getFoiEnviado());
+            p.save();
         }
 
     }

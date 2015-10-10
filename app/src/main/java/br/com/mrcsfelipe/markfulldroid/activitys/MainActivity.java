@@ -16,6 +16,8 @@ import android.widget.SimpleAdapter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,12 +78,12 @@ public class MainActivity extends ListActivity {
 
 
         Map<String, Object> item = new HashMap<String, Object>();
-       // DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         for (Person p : persons.getPersons()) {
             item = new HashMap<String, Object>();
             item.put("identify", p.getIdentify());
             item.put("nome", p.getNome());
-            item.put("nascimento", p.getDataNascimento());
+            item.put("nascimento", df.format(p.getDataNascimento()));
             personsMAP.add(item);
         }
         return personsMAP;
