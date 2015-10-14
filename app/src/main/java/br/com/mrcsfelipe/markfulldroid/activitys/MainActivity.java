@@ -79,6 +79,7 @@ public class MainActivity extends ListActivity {
 
         Map<String, Object> item = new HashMap<String, Object>();
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
         for (Person p : persons.getPersons()) {
             item = new HashMap<String, Object>();
             item.put("identify", p.getIdentify());

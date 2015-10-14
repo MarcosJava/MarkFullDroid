@@ -82,8 +82,8 @@ public class CriarNotificacao extends Service {
 
 
         public void enviarTodos(){
-            persons = Person.findWithQuery(Person.class, "Select * from Person where foiEnviado = ?", "false");
-            new HttpRequestTask().execute(MediaType.APPLICATION_JSON);
+            //persons = Person.findWithQuery(Person.class, "Select * from Person where foiEnviado = ?", "false");
+            //new HttpRequestTask().execute(MediaType.APPLICATION_JSON);
 
         }
 
@@ -157,9 +157,9 @@ public class CriarNotificacao extends Service {
             }
 
             public void enviadoSalvaSQL(){
-                Person p = Person.findById(Person.class, person.getId());
-                p.setFoiEnviado("true");
-                p.save();
+                //Person p = Person.findById(Person.class, person.getId());
+                //p.setFoiEnviado("true");
+                //p.save();
             }
 
         }

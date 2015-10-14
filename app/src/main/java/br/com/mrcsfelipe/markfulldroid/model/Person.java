@@ -13,7 +13,7 @@ import java.util.Date;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Person extends SugarRecord<Person>{
+public class Person{
 
     @JsonProperty
     private Integer identify;

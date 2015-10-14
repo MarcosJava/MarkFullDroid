@@ -61,6 +61,7 @@ public class SalvarActivity extends AppCompatActivity {
             person.setNome(etNome.getText().toString());
             person.setDataNascimento(new Date());
             Log.i("Post", "enviando para o servidor");
+
             new HttpRequestTask().execute(MediaType.APPLICATION_JSON);
 
         }catch (Exception e){
@@ -171,8 +172,8 @@ public class SalvarActivity extends AppCompatActivity {
             Log.i("NAO SALVO", person.toString());
            // person.save();
 
-            Person p = new Person(null,person.getNome(), person.getDataNascimento(), person.getFoiEnviado());
-            p.save();
+            //Person p = new Person(null,person.getNome(), person.getDataNascimento(), person.getFoiEnviado());
+            //p.save();
         }
 
     }
