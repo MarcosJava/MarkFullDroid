@@ -1,0 +1,5 @@
+<root>
+  <item name='android.app.ListActivity android.widget.ListView getListView()'>
+    <annotation name='java.lang.annotation.Deprecated' />
+  </item>
+</root>

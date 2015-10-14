@@ -10,4 +10,12 @@
     <string name="notificacao">Notificacao</string>
     <string name="nome">Nome :</string>
     <string name="dt_nascimento">Data Nascimento :</string>
+
+    <string name="excluir">Excluir</string>
+    <string name="sim"> Sim </string>
+    <string name="nao"> Não </string>
+    <string name="confirmacao_exclusao_viagem">Confirma a exclusao do item ?</string>
+
+    <string name="opcoes">Opções</string>
+    <string name="erro_deletar">Ocorreu um erro ao deletar</string>
 </resources>
