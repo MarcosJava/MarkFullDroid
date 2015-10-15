@@ -12,4 +12,4 @@ OBSERVAÇÕES : <br>
 ---- Fora de boas praticas <br>
 -- Web Service esta fazendo full scan no banco de dados e jogando tudo pro android. <br>
 -- Não contem uma conexao segura ( OAuth , KeyPath e etc.. ), todos podem deletar. <br>
--- Dentre outros .
+-- O Projeto esta em Portuglês ( Portugues mais Inglês ) não podendo ficar assim !! PADRONIZE SEUS PROJETOS <br>
